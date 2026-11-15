@@ -33,6 +33,7 @@
 #define DPDiaBrowserDelegate    "_TtC3ADK15ChromiumBrowser"
 #define DPDiaWebContents        "ArcWebContents"
 #define DPDiaNavigationController "ArcWebContentsNavigationController"
+#define DPDiaMediaSession       "ArcWebContentsMediaSession"
 #define DPDiaTabGroupProperties "ArcTabGroupProperties"
 #define DPDiaTabSwitcher        "_TtC10RecentTabs26RecentTabsWindowController"
 #define DPDiaTabSwitcherList    "_TtC10RecentTabs24RecentTabsViewController"
