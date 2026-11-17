@@ -38,10 +38,22 @@ void DPHoldAutoPip(void) {
     });
 }
 
+static void DPTabList_backgroundDoubleClick(NSView *self, SEL _cmd, id gesture) {
+    DPHoldAutoPip();
+    DPCallOriginal(DPTabList_backgroundDoubleClick, self, gesture);
+}
+
+static void DPPlusButton_mouseDown(NSView *self, SEL _cmd, NSEvent *event) {
+    if (DPIsKind(self.superview, DPDiaTabStripTabs)) DPHoldAutoPip();
+    DPCallOriginal(DPPlusButton_mouseDown, self, event);
+}
+
 void DPInstallAutoPipHold(void) {
     DPHeld = [NSHashTable weakObjectsHashTable];
     DPHook(DPDiaMediaSession, @selector(requestPictureInPicture:), (IMP)DPMediaSession_requestPictureInPicture);
     DPHook(DPDiaMediaSession, @selector(exitPictureInPicture:error:), (IMP)DPMediaSession_exitPictureInPicture);
+    DPHook(DPDiaTabList, @selector(handleBackgroundDoubleClick:), (IMP)DPTabList_backgroundDoubleClick);
+    DPHook(DPDiaTabSurfaceButton, @selector(mouseDown:), (IMP)DPPlusButton_mouseDown);
     [NSNotificationCenter.defaultCenter addObserverForName:NSMenuWillSendActionNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         if ([[note.userInfo[@"MenuItem"] title] isEqual:@"New Tab"]) DPHoldAutoPip();
     }];
